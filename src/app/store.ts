@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '../features/counter/counterSlice'
 import testsReducer from '../features/tests/testsSlice'
 import postsReducer from '../features/posts/postsSlice'
+import usersReducer from '../features/users/usersSlice'
 
 export const store = configureStore({
     reducer: {
@@ -9,7 +10,7 @@ export const store = configureStore({
         tests: testsReducer,
         posts: postsReducer,
         //comments: commentsReducer,
-        //users: usersReducer
+        users: usersReducer
     }
 })
 

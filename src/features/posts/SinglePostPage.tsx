@@ -1,13 +1,17 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import {useAppSelector} from "../../hooks";
 import {Link, useParams} from "react-router-dom";
+import PostAuthor from "./PostAuthor";
+import {ReactionButtons} from "./ReactionButtons";
+import {selectPostById} from "./postsSlice";
 
 export function SinglePostPage(props:any) {
     const { postId } = useParams();
 
     const post = useAppSelector(state =>
-        state.posts.find(post => post.id === postId))
+        selectPostById(state, postId))
+    /*const post = useAppSelector(state =>
+        state.posts.find(post => post.id === postId))*/
 
     if (!post) {
         return (
@@ -22,9 +26,11 @@ export function SinglePostPage(props:any) {
             <article className="post">
                 <h2>{post.title}</h2>
                 <p className="post-content">{post.content}</p>
+                <ReactionButtons post={post}/>
                 <Link to={`/editPost/${post.id}`} className="button">
                     Edit Post
                 </Link>
+                <PostAuthor userId={post.user}/>
             </article>
         </section>
     )

@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {useParams} from 'react-router-dom'
 
-import {PostsState, postUpdated} from './postsSlice'
+import {PostsState, postUpdated, selectPostById} from './postsSlice'
 import {useAppSelector} from "../../hooks";
+import {ReactionButtons} from "./ReactionButtons";
 
 export const EditPostForm = (params:any) => {
     const { postId } = useParams()
 
-    const post:any = useAppSelector(state =>
-        state.posts.find(post => post.id === postId))
+    const post = useAppSelector(state =>
+        selectPostById(state, postId))
+
+    /*const post:any = useAppSelector(state =>
+        state.posts.find(post => post.id === postId))*/
 
     const [title, setTitle] = useState(post.title)
     const [content, setContent] = useState(post.content)
@@ -47,6 +51,7 @@ export const EditPostForm = (params:any) => {
                     onChange={onContentChanged}
                 />
             </form>
+            <ReactionButtons post={post}/>
             <button type="button" onClick={onSavePostClicked}>
                 Save Post
             </button>
