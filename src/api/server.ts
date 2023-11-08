@@ -142,8 +142,13 @@ export const handlers = [
         return HttpResponse.json(posts)
     }),
     rest.post('/fakeApi/posts',
-        async ({ request:req }) => {
-        const data:any = req.body
+        async ({ request:req,...url }) => {
+        //console.log(req,'req')
+            //const nextPost = await req.json()
+        //console.log(nextPost,'nextPost')
+        //console.log(url,'url')
+        //const data:any = req.body
+        const data:any = await req.json()
 
         if (data.content === 'error') {
             await delay(ARTIFICIAL_DELAY_MS)
@@ -151,12 +156,14 @@ export const handlers = [
                 status: 500
             })
         }
-
+        console.log(data,'data')
         data.date = new Date().toISOString()
 
         const user = db.user.findFirst({ where: { id: { equals: data.user } } })
         data.user = user
         data.reactions = db.reaction.create()
+
+            console.log(data,'data')
 
         const post = db.post.create(data)
         //return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(serializePost(post)))

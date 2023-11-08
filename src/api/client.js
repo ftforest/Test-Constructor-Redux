@@ -12,6 +12,7 @@ export async function client(endpoint, { body, ...customConfig } = {}) {
 
     if (body) {
         config.body = JSON.stringify(body)
+        console.log(config.body,'config.body')
     }
 
     let data

@@ -27,10 +27,10 @@ const Routery = () => {
 
                     <Route path='tests' element={<TestsList/>} errorElement={<ErrorPage/>}/>
                     <Route path='tests/add' element={<AddPostForm/>} errorElement={<ErrorPage/>}/>
-                    {/*<Route
+                    <Route
                         path="*"
                         element={<Navigate to="/" replace />}
-                    />*/}
+                    />
                 </Routes>
             </div>
         </BrowserRouter>
