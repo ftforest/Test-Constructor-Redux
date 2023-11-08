@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {useParams} from 'react-router-dom'
 
 import {PostsState, postUpdated, selectPostById} from './postsSlice'
-import {useAppSelector} from "../../hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 import {ReactionButtons} from "./ReactionButtons";
 
 export const EditPostForm = (params:any) => {
@@ -18,7 +18,7 @@ export const EditPostForm = (params:any) => {
     const [title, setTitle] = useState(post.title)
     const [content, setContent] = useState(post.content)
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const onTitleChanged = (e:any) => setTitle(e.target.value)
     const onContentChanged = (e:any) => setContent(e.target.value)
