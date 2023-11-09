@@ -6,6 +6,9 @@ import {PostsState, postUpdated, selectPostById} from './postsSlice'
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {ReactionButtons} from "./ReactionButtons";
 
+import { useNavigate } from 'react-router-dom';
+
+
 export const EditPostForm = (params:any) => {
     const { postId } = useParams()
 
@@ -19,6 +22,7 @@ export const EditPostForm = (params:any) => {
     const [content, setContent] = useState(post.content)
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate();
 
     const onTitleChanged = (e:any) => setTitle(e.target.value)
     const onContentChanged = (e:any) => setContent(e.target.value)
@@ -26,7 +30,8 @@ export const EditPostForm = (params:any) => {
     const onSavePostClicked = () => {
         if (title && content) {
             dispatch(postUpdated({ id: postId, title, content }))
-            window.location.href = `/posts/${postId}`
+            //window.location.href =
+            navigate(`/posts/${postId}`);
         }
     }
 
