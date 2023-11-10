@@ -49,14 +49,14 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
     return response.data
 })
 
-interface  initState {
+export interface  initPostsState {
 // Multiple possible status enum values
     posts: PostsState[],
     status: 'idle' | 'loading' | 'succeeded' | 'failed',
     error: string | null
 }
 
-const initialState:initState = {
+const initialState:initPostsState = {
     posts: [],
     status: 'idle',
     error: null

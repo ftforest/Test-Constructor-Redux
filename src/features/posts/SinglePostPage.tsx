@@ -3,12 +3,12 @@ import {useAppSelector} from "../../hooks";
 import {Link, useParams} from "react-router-dom";
 import PostAuthor from "./PostAuthor";
 import {ReactionButtons} from "./ReactionButtons";
-import {selectPostById} from "./postsSlice";
+import {initPostsState, selectPostById} from "./postsSlice";
 
 export function SinglePostPage(props:any) {
-    const { postId } = useParams();
+    let { postId } = useParams();
 
-    const post = useAppSelector(state =>
+    const post = useAppSelector((state:any) =>
         selectPostById(state, postId))
     /*const post = useAppSelector(state =>
         state.posts.find(post => post.id === postId))*/
