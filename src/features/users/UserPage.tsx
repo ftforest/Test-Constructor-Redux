@@ -15,8 +15,8 @@ export const UserPage = (props:any) => {
         return allPosts.filter((post:PostsState) => post.user === userId)
     })
 
-    const postTitles = postsForUser.map((post:PostsState) => (
-        <li key={post.id}>
+    const postTitles = postsForUser.map((post:PostsState,idx:number) => (
+        <li key={idx}>
             <Link to={`/posts/${post.id}`}>{post.title}</Link>
         </li>
     ))

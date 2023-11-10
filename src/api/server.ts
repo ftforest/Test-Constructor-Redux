@@ -7,6 +7,7 @@ import { faker } from '@faker-js/faker';
 import { setNouns as setRandom } from 'txtgen'
 import {UsersState} from "../features/users/usersSlice";
 import {PostsState} from "../features/posts/postsSlice";
+import {parseISO} from "date-fns";
 export const name: string = faker.person.firstName();
 
 const seedrandom = require('seedrandom');
@@ -225,17 +226,21 @@ export const handlers = [
             ctx.json(serializePost(updatedPost))
         )
     }),
-    rest.get('/fakeApi/notifications', (req, res, ctx) => {
+    */
+    rest.get('/fakeApi/notifications', async ({ request,
+        params,
+        cookies }) => {
+        const { since } = params
+        console.log('Fetching since "%s"', since)
         const numNotifications = getRandomInt(1, 5)
-
         let notifications = generateRandomNotifications(
-            undefined,
+            since,
             numNotifications,
             db
         )
-
-        return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(notifications))
-    }),*/
+        await delay(ARTIFICIAL_DELAY_MS)
+        return HttpResponse.json(notifications)
+    }),
     rest.get('/fakeApi/users', async (
         { request,
             params,
@@ -246,3 +251,40 @@ export const handlers = [
 ]
 
 export const worker = setupWorker(...handlers)
+
+/* Random Notifications Generation */
+
+const notificationTemplates = [
+    'poked you',
+    'says hi!',
+    `is glad we're friends`,
+    'sent you a gift',
+]
+
+function generateRandomNotifications(since:any, numNotifications:any, db:any) {
+    const now = new Date()
+    let pastDate :Date
+
+    if (since) {
+        pastDate = parseISO(since)
+    } else {
+        pastDate = new Date(now.valueOf())
+        pastDate.setMinutes(pastDate.getMinutes() - 15)
+    }
+
+    // Create N random notifications. We won't bother saving these
+    // in the DB - just generate a new batch and return them.
+    const notifications = [...Array(numNotifications)].map(() => {
+        const user = randomFromArray(db.user.getAll())
+        const template = randomFromArray(notificationTemplates)
+        return {
+            id: nanoid(),
+            date: faker.date.between( pastDate, now).toISOString(),
+            message: template,
+            user: user.id,
+        }
+    })
+
+    return notifications
+}
+

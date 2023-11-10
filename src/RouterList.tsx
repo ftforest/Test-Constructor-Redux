@@ -9,6 +9,7 @@ import Navbar from "./app/Navbar";
 import {EditPostForm} from "./features/posts/EditPostForm";
 import {UsersList} from "./features/users/UsersList";
 import {UserPage} from "./features/users/UserPage";
+import {NotificationsList} from "./features/notifications/NotificationsList";
 
 
 
@@ -26,8 +27,9 @@ const Routery = () => {
                     } errorElement={<ErrorPage/>}/>
                     <Route path="/posts/:postId" element={<SinglePostPage/>} errorElement={<ErrorPage/>}/>
                     <Route path="/editPost/:postId" element={<EditPostForm/>} />
-                    <Route  path="/users" element={<UsersList />} />
-                    <Route  path="/users/:userId" element={<UserPage/>} />
+                    <Route path="/users" element={<UsersList />} />
+                    <Route path="/users/:userId" element={<UserPage/>} />
+                    <Route path="/notifications" element={<NotificationsList/>} />
 
                     <Route path='tests' element={<TestsList/>} errorElement={<ErrorPage/>}/>
                     <Route path='tests/add' element={<AddPostForm/>} errorElement={<ErrorPage/>}/>
