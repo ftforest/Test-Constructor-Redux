@@ -21,14 +21,15 @@ export interface NotificationsState {
     date:string;
     message:string;
     user:string;
+    read:boolean;
 }
 
 const notificationsSlice = createSlice({
     name: 'notifications',
     initialState: [],
     reducers: {
-        allNotificationsRead(state, action) {
-            state.forEach((notification:any) => {
+        allNotificationsRead(state:any[], action) {
+            state.forEach((notification) => {
                 notification.read = true
             })
         }
@@ -36,6 +37,10 @@ const notificationsSlice = createSlice({
     extraReducers(builder) {
         builder.addCase(fetchNotifications.fulfilled, (state:any[], action) => {
             state.push(...action.payload)
+            state.forEach(notification => {
+                // Any notifications we've read are no longer new
+                notification.isNew = !notification.read
+            })
             // Sort with newest first
             state.sort((a:any, b:any) => b.date.localeCompare(a.date))
         })
