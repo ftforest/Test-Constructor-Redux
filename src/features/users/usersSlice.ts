@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, nanoid} from '@reduxjs/toolkit'
+import {createAsyncThunk, createEntityAdapter, createSlice, nanoid} from '@reduxjs/toolkit'
 import { client } from '../../api/client'
 import {manyOf, primaryKey} from "@mswjs/data";
 
@@ -11,7 +11,11 @@ export interface UsersState {
     posts: string[];
 }
 
-const initialState:UsersState[] = []
+const usersAdapter = createEntityAdapter()
+
+const initialState = usersAdapter.getInitialState()
+
+//const initialState:UsersState[] = []
 
 /*const initialState:UsersState[] = [
     { id: '0', name: 'Tianna Jenkins' },
@@ -29,15 +33,11 @@ const usersSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers(builder) {
-        builder.addCase(fetchUsers.fulfilled, (state, action) => {
-            return action.payload
-        })
+        builder.addCase(fetchUsers.fulfilled, usersAdapter.setAll)
     }
 })
 
 export default usersSlice.reducer
 
-export const selectAllUsers = (state:any) => state.users
-
-export const selectUserById = (state:any, userId:any) =>
-    state.users.find((user:UsersState) => user.id === userId)
+export const { selectAll: selectAllUsers, selectById: selectUserById } =
+    usersAdapter.getSelectors((state:any) => state.users)

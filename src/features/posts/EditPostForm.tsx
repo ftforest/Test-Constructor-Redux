@@ -12,8 +12,8 @@ import { useNavigate } from 'react-router-dom';
 export const EditPostForm = (params:any) => {
     const { postId } = useParams()
 
-    const post = useAppSelector(state =>
-        selectPostById(state, postId))
+    const post:any = useAppSelector(state =>
+        postId ? selectPostById(state, postId) : undefined)
 
     /*const post:any = useAppSelector(state =>
         state.posts.find(post => post.id === postId))*/

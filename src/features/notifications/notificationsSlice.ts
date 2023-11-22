@@ -1,8 +1,12 @@
-import {createSlice, createAsyncThunk, nanoid} from '@reduxjs/toolkit'
+import {createSlice, createAsyncThunk, nanoid, createEntityAdapter} from '@reduxjs/toolkit'
 
 import { client } from '../../api/client'
 import {faker} from "@faker-js/faker";
 import {RootState} from "../../app/store";
+
+const notificationsAdapter = createEntityAdapter({
+    sortComparer: (a:NotificationsState, b:NotificationsState) => b.date.localeCompare(a.date)
+})
 
 export const fetchNotifications = createAsyncThunk(
     'notifications/fetchNotifications',
@@ -26,23 +30,21 @@ export interface NotificationsState {
 
 const notificationsSlice = createSlice({
     name: 'notifications',
-    initialState: [],
+    initialState: notificationsAdapter.getInitialState(),
     reducers: {
-        allNotificationsRead(state:any[], action) {
-            state.forEach((notification) => {
+        allNotificationsRead(state:any, action) {
+            Object.values(state.entities).forEach((notification:any) => {
                 notification.read = true
             })
         }
     },
     extraReducers(builder) {
-        builder.addCase(fetchNotifications.fulfilled, (state:any[], action) => {
-            state.push(...action.payload)
-            state.forEach(notification => {
+        builder.addCase(fetchNotifications.fulfilled, (state:any, action) => {
+            notificationsAdapter.upsertMany(state, action.payload)
+            Object.values(state.entities).forEach((notification:any) => {
                 // Any notifications we've read are no longer new
                 notification.isNew = !notification.read
             })
-            // Sort with newest first
-            state.sort((a:any, b:any) => b.date.localeCompare(a.date))
         })
     }
 })
@@ -51,5 +53,6 @@ export const { allNotificationsRead } = notificationsSlice.actions
 
 export default notificationsSlice.reducer
 
-export const selectAllNotifications = (state:any) => state.notifications
+export const { selectAll: selectAllNotifications } =
+    notificationsAdapter.getSelectors((state:any) => state.notifications)
 

@@ -8,8 +8,8 @@ import {initPostsState, selectPostById} from "./postsSlice";
 export function SinglePostPage(props:any) {
     let { postId } = useParams();
 
-    const post = useAppSelector((state:any) =>
-        selectPostById(state, postId))
+    const post:any = useAppSelector(state =>
+        postId ? selectPostById(state, postId) : undefined)
     /*const post = useAppSelector(state =>
         state.posts.find(post => post.id === postId))*/
 

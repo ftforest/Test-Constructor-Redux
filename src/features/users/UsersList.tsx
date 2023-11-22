@@ -2,9 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import {selectAllUsers, UsersState} from './usersSlice'
 import {useAppSelector} from "../../hooks";
+import {selectPostById} from "../posts/postsSlice";
 
 export const UsersList = () => {
-    const users = useAppSelector(selectAllUsers)
+    const users:any = useAppSelector(selectAllUsers)
 
     const renderedUsers = users.map((user:UsersState) => (
         <li key={user.id}>

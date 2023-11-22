@@ -20,7 +20,7 @@ export const NotificationsList = () => {
     const renderedNotifications = notifications.map((notification:any,idx:number) => {
         const date = parseISO(notification.date)
         const timeAgo = formatDistanceToNow(date)
-        const user = users.find((user:any) => user.id === notification.user) || {
+        const user:any = users.find((user:any) => user.id === notification.user) || {
             name: 'Unknown User'
         }
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {useAppDispatch, useAppSelector} from "../../hooks";
-import {addNewPost, postAdded} from "./postsSlice";
+import { selectAllUsers } from '../users/usersSlice';
+import {addNewPost} from "./postsSlice";
 //import {postAdded} from "../../app/action";
 
 
@@ -13,7 +14,7 @@ export const AddPostForm = () => {
     //const dispatch = useDispatch()
     const dispatch = useAppDispatch()
 
-    const users = useAppSelector(state => state.users)
+    const users:any = useAppSelector(selectAllUsers)
 
     const onTitleChanged = (e:any) => setTitle(e.target.value)
     const onContentChanged = (e:any) => setContent(e.target.value)
@@ -39,7 +40,7 @@ export const AddPostForm = () => {
         }
     }
 
-    const usersOptions = users.map(user => (
+    const usersOptions = users.map((user:any) => (
         <option key={user.id} value={user.id}>
             {user.name}
         </option>
